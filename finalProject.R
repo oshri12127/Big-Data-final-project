@@ -8,6 +8,7 @@ dt.unemploymentData1 = fread("unemployment_1980-2018.csv")
 dt.unemploymentData2 = fread("Unemployment_2012-2020.csv")
 dt.education = fread("EducationReport_1970-2019.csv")
 dt.poverty = fread("Poverty_1980-2019.csv")
+dt.crime = fread("crime_by_state_2001-2017.csv")
 
 dt.governors= dt.governors[year>=1970,.(year,state,party)]
 dt.governors =dt.governors[order(decreasing = T,year),]
@@ -22,3 +23,7 @@ dt.unemployment[,'2020':=dt.unemploymentData2$`2020`,by=dt.unemployment$Name,]##
 colnames(dt.poverty)<-as.character(dt.poverty[1,]) ##set header first row
 dt.poverty<-dt.poverty[-1,] ##remove first row after set to header
 
+
+dt.crime= dt.crime[,.(jurisdiction,year,state_population,violent_crime_total)]
+dt.crime[,crime_total_usa:= sum(violent_crime_total),by=year]##calculate the crime_total_usa by year
+dt.crime[,crime_total_percent:= violent_crime_total/crime_total_usa*100]##calculate the crime_total_percent

@@ -44,8 +44,11 @@ print(colSums(is.na(dt.poverty)|dt.poverty==''))
 print(colSums(is.na(dt.crime)|dt.crime==''))
 
 ###Data visualization###
-#ג*רףףף של 51 מדינותתתת4
-#boxplot(dt.education[,Name:=NULL],col="orange",notch=TRUE)#,xlab)
+
+ggplot(dt.unemployment,aes(x=year,y=unemployment_percent,color=factor(Area),group=factor(Area)))+geom_line()
+ggplot(dt.poverty,aes(x=year,y=poverty_percent,color=factor(state),group=factor(state)))+geom_line()
+ggplot(dt.education,aes(x=year,y=education_percent,color=factor(Name),group=factor(Name)))+geom_line()
+ggplot(dt.crime,aes(x=year,y=crime_total_percent,color=factor(jurisdiction),group=factor(jurisdiction)))+geom_line()
 
 ###Exploratory data analysis###
 

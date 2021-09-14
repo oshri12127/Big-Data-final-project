@@ -23,13 +23,13 @@ dt.unemployment=dt.unemploymentData1
 dt.unemployment[,'2019':=dt.unemploymentData2$`2019`[match(Area,dt.unemploymentData2$Name)]]##add 2019 from dt.unemploymentData2
 dt.unemployment[,'2020':=dt.unemploymentData2$`2020`[match(Area,dt.unemploymentData2$Name)]]##add 2020 from dt.unemploymentData2
 dt.unemployment$Fips=NULL ##delete column Fips
-dt.unemployment= gather(dt.unemployment,year,unemployment_percent,-Area) #combine multiple columns into a single column (many years to year)
+dt.unemployment= data.table(gather(dt.unemployment,year,unemployment_percent,-Area)) #combine multiple columns into a single column (many years to year)
 
-dt.education= gather(dt.education,year,education_percent,-Name) #combine multiple columns into a single column (many years to year)
+dt.education= data.table(gather(dt.education,year,education_percent,-Name)) #combine multiple columns into a single column (many years to year)
 
 colnames(dt.poverty)<-as.character(dt.poverty[1,]) ##set header first row
 dt.poverty<-dt.poverty[-1,] ##remove first row after set to header
-dt.poverty= gather(dt.poverty,year,poverty_percent,-state) #combine multiple columns into a single column (many years to year)
+dt.poverty= data.table(gather(dt.poverty,year,poverty_percent,-state) )#combine multiple columns into a single column (many years to year)
 
 dt.crime= dt.crime[,.(jurisdiction,year,state_population,violent_crime_total)]
 dt.crime[,crime_total_usa:= sum(violent_crime_total),by=year]##calculate the crime_total_usa by year
@@ -52,9 +52,9 @@ ggplot(dt.crime,aes(x=year,y=crime_total_percent,color=factor(jurisdiction),grou
 
 ###Exploratory data analysis###
 
-dt.unemployment$party<-dt.governors$party[match(paste0(dt.unemployment$Area,dt.poverty$year),paste0(dt.governors$state,dt.governors$year))] ##add party column by year and state from dt.governors 
-dt.education$party<-dt.governors$party[match(paste0(dt.education$Name,dt.education$year),paste0(dt.governors$state,dt.governors$year))] ##add party column by year and state from dt.governors
-dt.poverty$party<-dt.governors$party[match(paste0(dt.poverty$state,dt.poverty$year),paste0(dt.governors$state,dt.governors$year))] ##add party column by year and state from dt.governors
+dt.unemployment[,'party':=dt.governors$party[match(paste0(Area,year),paste0(dt.governors$state,dt.governors$year))]] ##add party column by year and state from dt.governors 
+dt.education[,'party':=dt.governors$party[match(paste0(dt.education$Name,dt.education$year),paste0(dt.governors$state,dt.governors$year))]] ##add party column by year and state from dt.governors
+dt.poverty[,'party':=dt.governors$party[match(paste0(dt.poverty$state,dt.poverty$year),paste0(dt.governors$state,dt.governors$year))]] ##add party column by year and state from dt.governors
 dt.crime[,'party':= dt.governors$party[match(paste0(jurisdiction,year),paste0(dt.governors$state,dt.governors$year))]] ##add party column by year and state from dt.governors
 
 ###Statistical inference###

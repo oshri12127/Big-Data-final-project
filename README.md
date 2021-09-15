@@ -13,5 +13,3 @@ poverty
 https://www.kaggle.com/christophercorrea/prisoners-and-crime-in-united-states
 crime
 
-https://www.ers.usda.gov/data-products/county-level-data-sets/
-Education

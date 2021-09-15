@@ -1,3 +1,6 @@
+#Osher abergil-20634539
+#Leead keness 203934435
+
 library(data.table)
 library(dplyr)
 library(ggplot2)
